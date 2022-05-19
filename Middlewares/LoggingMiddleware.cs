@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MvcStartApp.Models.Db;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -9,13 +10,15 @@ namespace MvcStartApp.Middlewares
     public class LoggingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly IRequestsRepository _requestsRepository;
 
         /// <summary>
         ///  Middleware-компонент должен иметь конструктор, принимающий RequestDelegate
         /// </summary>
-        public LoggingMiddleware(RequestDelegate next)
+        public LoggingMiddleware(RequestDelegate next, IRequestsRepository requestsRepository)
         {
             _next = next;
+            _requestsRepository = requestsRepository;
         }
 
         /// <summary>
@@ -23,30 +26,22 @@ namespace MvcStartApp.Middlewares
         /// </summary>
         public async Task InvokeAsync(HttpContext context)
         {
-            LogConsole(context);
-            //await LogFile(context);
+            //LogConsole(context);
+            await LogDb(context);
 
             // Передача запроса далее по конвейеру
             await _next.Invoke(context);
         }
 
+        private async Task LogDb(HttpContext context)
+        {
+            await _requestsRepository.AddRequest(context.Request.Host.Value);
+        }
+
         private void LogConsole(HttpContext context)
         {
             // Для логирования данных о запросе используем свойста объекта HttpContext
-            //Console.WriteLine($"[{DateTime.Now}]: New request to http://{context.Request.Host.Value + context.Request.Path}");
             Debug.WriteLine($"[{DateTime.Now}]: New request to http://{context.Request.Host.Value + context.Request.Path}");
-        }
-
-        private async Task LogFile(HttpContext context)
-        {
-            // Строка для публикации в лог
-            string logMessage = $"[{DateTime.Now}]: New request to http://{context.Request.Host.Value + context.Request.Path}{Environment.NewLine}";
-
-            // Путь до лога 
-            string logFilePath = Path.Combine(Directory.GetCurrentDirectory(), "Logs", "RequestLog.txt");
-
-            // Используем асинхронную запись в файл
-            await File.AppendAllTextAsync(logFilePath, logMessage);
         }
     }
 }
