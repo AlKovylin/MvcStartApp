@@ -27,11 +27,11 @@ namespace MvcStartApp
         public void ConfigureServices(IServiceCollection services)
         {            
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<BlogContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<BlogContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
 
             // регистрация сервиса репозитория для взаимодействия с базой данных
-            services.AddScoped<IBlogRepository, BlogRepository>();
-            services.AddScoped<IRequestsRepository, RequestsRepository>();
+            services.AddTransient<IBlogRepository, BlogRepository>();
+            services.AddTransient<IRequestsRepository, RequestsRepository>();
 
             services.AddControllersWithViews();            
         }
