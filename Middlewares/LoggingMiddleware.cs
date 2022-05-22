@@ -2,7 +2,6 @@
 using MvcStartApp.Models.Db;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace MvcStartApp.Middlewares
@@ -10,15 +9,15 @@ namespace MvcStartApp.Middlewares
     public class LoggingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IRequestsRepository _requestsRepository;
+        private readonly ILogsRepository _logsRepository;
 
         /// <summary>
         ///  Middleware-компонент должен иметь конструктор, принимающий RequestDelegate
         /// </summary>
-        public LoggingMiddleware(RequestDelegate next, IRequestsRepository requestsRepository)
+        public LoggingMiddleware(RequestDelegate next, ILogsRepository logsRepository)
         {
             _next = next;
-            _requestsRepository = requestsRepository;
+            _logsRepository = logsRepository;
         }
 
         /// <summary>
@@ -35,7 +34,7 @@ namespace MvcStartApp.Middlewares
 
         private async Task LogDb(HttpContext context)
         {
-            await _requestsRepository.AddRequest(context.Request.Host.Value);
+            await _logsRepository.AddRequest(context.Request.Host.Value);
         }
 
         private void LogConsole(HttpContext context)

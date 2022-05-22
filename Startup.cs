@@ -1,16 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MvcStartApp.Middlewares;
 using MvcStartApp.Models.Db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MvcStartApp
 {
@@ -31,7 +26,7 @@ namespace MvcStartApp
 
             // регистрация сервиса репозитория для взаимодействия с базой данных
             services.AddTransient<IBlogRepository, BlogRepository>();
-            services.AddTransient<IRequestsRepository, RequestsRepository>();
+            services.AddTransient<ILogsRepository, LogsRepository>();
 
             services.AddControllersWithViews();            
         }
@@ -50,6 +45,7 @@ namespace MvcStartApp
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();

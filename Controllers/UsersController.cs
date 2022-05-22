@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcStartApp.Models.Db;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MvcStartApp.Controllers
@@ -21,11 +18,6 @@ namespace MvcStartApp.Controllers
             var authors = await _repo.GetUsers();
             return View(authors);
         }
-
-        //public async Task<IActionResult> Register()
-        //{
-        //    return View();
-        //}
 
         [HttpGet]
         public IActionResult Register()

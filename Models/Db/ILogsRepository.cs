@@ -2,7 +2,7 @@
 
 namespace MvcStartApp.Models.Db
 {
-    public interface IRequestsRepository
+    public interface ILogsRepository
     {
         Task AddRequest(string url);
         Task<Request[]> GetRequest();

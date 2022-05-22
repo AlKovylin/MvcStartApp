@@ -1,18 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MvcStartApp.Models.Db
 {
-    public class RequestsRepository : IRequestsRepository
+    public class LogsRepository : ILogsRepository
     {
         // ссылка на контекст
         private readonly BlogContext _context;
 
         // Метод-конструктор для инициализации
-        public RequestsRepository(BlogContext context)
+        public LogsRepository(BlogContext context)
         {
             _context = context;
         }
